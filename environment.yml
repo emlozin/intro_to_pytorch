@@ -1,0 +1,11 @@
+name: intro_to_pytorch
+dependencies:
+  - python=3.8
+  - pip
+  - numpy
+  - pandas
+  - jupyter
+  - matplotlib
+  - scipy
+  - pytorch
+  - torchvision
