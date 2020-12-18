@@ -1,6 +1,7 @@
 name: intro_to_pytorch
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - ipykernel
   - ipython
@@ -8,6 +9,7 @@ dependencies:
   - ipympl
   - jupyter
   - jupyterlab
+  - nodejs
   - matplotlib
   - notebook
   - numpy
@@ -18,5 +20,7 @@ dependencies:
   - pytorch
   - torchvision
   - seaborn
-  - jupyter_contrib_nbextensions
+  - jupyter_contrib_nbextensions 
   - jupyter_nbextensions_configurator
+  - pip:
+      - -e .
