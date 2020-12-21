@@ -1,3 +1,4 @@
+from workshop import data
 import time
 import matplotlib.pyplot as plt
 import numpy as np
@@ -29,8 +30,8 @@ def load_data():
     ])
 
     # Download and load the training data
-    trainset = datasets.MNIST('../data', download=True, train=True, transform=transform)
-    testset = datasets.MNIST('../data', download=True, transform=transform)
+    trainset = datasets.MNIST(data.DATA_PATH, download=True, train=True, transform=transform)
+    testset = datasets.MNIST(data.DATA_PATH, download=True, transform=transform)
 
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
     testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=True)
