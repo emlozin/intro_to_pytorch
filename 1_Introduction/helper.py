@@ -29,15 +29,15 @@ def load_data():
     ])
 
     # Download and load the training data
-    trainset = datasets.MNIST('MNIST_data/', download=True, train=True, transform=transform)
-    testset = datasets.MNIST('MNIST_data/', download=True, transform=transform)
+    trainset = datasets.MNIST('../data', download=True, train=True, transform=transform)
+    testset = datasets.MNIST('../data', download=True, transform=transform)
 
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
     testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size, shuffle=True)
     return trainloader, testloader
 
 
-def train_network(net=test_model, epochs=30):
+def train_network(net=test_model, epochs=30, filename='workshop_model.pt'):
 
     criterion = nn.NLLLoss()
     optimizer = optim.SGD(net.parameters(), lr=0.003, momentum=0.9)
@@ -66,7 +66,7 @@ def train_network(net=test_model, epochs=30):
         print(f"Epoch: {epoch}\tloss:{running_loss/len(trainloader):.5f}")
 
     print(f"Finished Training in {time.time() - start_time}")
-    torch.save(net, 'workshop_model.pt')
+    torch.save(net, filename)
 
 
 def test_network(show_size=18, no_cols=4):
@@ -119,5 +119,5 @@ def view_classify(testloader, net, show_size=18, no_cols=4):
 
 
 if __name__ == "__main__":
-    train_network()
+    train_network(filename='custom_model.pt')
     plt.show()
