@@ -63,15 +63,18 @@ def train_network(net=test_model, epochs=30, filename='workshop_model.pt'):
 
             # print statistics
             running_loss += loss.item()
-        print(f"Epoch: {epoch}\tloss:{running_loss/len(trainloader):.5f}")
+        print(f"Epoch: {epoch + 1}\tloss:{running_loss/len(trainloader):.5f}")
 
     print(f"Finished Training in {time.time() - start_time}")
     torch.save(net, filename)
+    print(net)
+    with torch.no_grad():
+        view_classify(testloader, net, 64, 8)
 
 
-def test_network(show_size=18, no_cols=4):
+def test_network(filename='workshop_model.pt', show_size=18, no_cols=4):
     (_, testloader) = load_data()
-    net = torch.load('workshop_model.pt')
+    net = torch.load(filename)
     print(net)
     with torch.no_grad():
         view_classify(testloader, net, show_size, no_cols)
@@ -119,5 +122,5 @@ def view_classify(testloader, net, show_size=18, no_cols=4):
 
 
 if __name__ == "__main__":
-    train_network(filename='custom_model.pt')
+    train_network(epochs=5, filename='custom_model.pt')
     plt.show()
