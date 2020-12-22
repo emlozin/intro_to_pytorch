@@ -17,6 +17,7 @@ Make sure you have [conda](https://docs.conda.io/projects/conda/en/latest/user-g
 ```
 conda env create -f environment.yml
 conda activate intro_to_pytorch
+python -m ipykernel install --user --name=intro_to_pytorch
 jupyter notebook
 ```
 
@@ -25,6 +26,7 @@ jupyter notebook
 ```
 conda env create -f environment.yml
 activate intro_to_pytorch
+python -m ipykernel install --user --name=intro_to_pytorch
 jupyter notebook
 ```
 
