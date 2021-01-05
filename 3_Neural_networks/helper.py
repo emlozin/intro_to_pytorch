@@ -31,8 +31,9 @@ def test_network(network, trainloader):
     view_classify(img.view(1, 28, 28), labels[0], ps)
 
     
-def view_data(trainloader):
-    image_set_size = 8
+def view_data(trainloader, show_size=8, no_cols=4):
+    no_cols = no_cols
+    no_rows = show_size//no_cols
     # Grab some data
     dataiter = iter(trainloader)
     images, labels = dataiter.next()
@@ -40,7 +41,7 @@ def view_data(trainloader):
     # Resize images into a 1D vector, new shape is (batch size, color channels, image pixels)
     images.resize_(64, 1, 784)
 
-    fig, axes = plt.subplots(figsize=(12, 6), ncols=image_set_size//2, nrows=2)
+    fig, axes = plt.subplots(figsize=(no_cols * 3, no_rows * 3), ncols=no_cols, nrows=no_rows)
 
     for index, axe in enumerate(axes.ravel()):
         img = images[index]
