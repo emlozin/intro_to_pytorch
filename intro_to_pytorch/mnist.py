@@ -1,19 +1,21 @@
 import os
 
 from intro_to_pytorch import helper, data
+import matplotlib.pyplot as plt
 
 import time
 import torch
 from torch import nn, optim
 from torchvision import datasets, transforms
 
-
 MODEL_FILENAME = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'workshop_model.pt')
+
+IMAGE_SIZE = (28, 28)
 BATCH_SIZE = 64
 
 
 def get_default_model():
-    input_size = 28 * 28
+    input_size = IMAGE_SIZE[0] * IMAGE_SIZE[1]
     hidden_sizes = [128, 64]
     output_size = 10
 
@@ -71,7 +73,7 @@ def train_network(network, epochs=30, filename=MODEL_FILENAME):
     torch.save(network, filename)
     print(network)
     with torch.no_grad():
-        view_classify(testloader, network, BATCH_SIZE, 8)
+        show_classify(testloader, network, BATCH_SIZE, 8)
 
 
 def test_network(filename=MODEL_FILENAME, show_size=64, no_cols=8):
@@ -79,23 +81,53 @@ def test_network(filename=MODEL_FILENAME, show_size=64, no_cols=8):
     model = torch.load(filename)
     print(model)
     with torch.no_grad():
-        view_classify(testloader, model, show_size, no_cols)
+        show_classify(testloader, model, show_size, no_cols)
 
 
-def view_classify(testloader, model, show_size=18, no_cols=4):
-    axes = helper.get_axes(no_cols, show_size, BATCH_SIZE)
+def show_classify(testloader, model, batch_size, show_size=18, no_cols=4):
+    with torch.no_grad():
+        axes = helper.get_axes(no_cols, show_size, batch_size)
 
-    dataiter = iter(testloader)
+        dataiter = iter(testloader)
+        images, labels = dataiter.next()
+        images = images.view(images.shape[0], -1)
+
+        outputs = model(images)
+        outputs = torch.exp(outputs)
+        outputs = list(outputs.numpy().squeeze())
+
+        images.resize_(batch_size, 1, IMAGE_SIZE[0] * IMAGE_SIZE[1])
+
+        show_output_mnist(axes, images, labels, outputs)
+
+
+def show_output_mnist(axes, images, labels, outputs):
+    for index, axe in enumerate(axes.ravel()):
+        output = outputs[index // 2]
+        if not index % 2:
+            img = images[index // 2]
+            axe.imshow(img.view(1, IMAGE_SIZE[0], IMAGE_SIZE[1]).numpy().squeeze())
+            axe.set_title(f"Correct: {labels[index // 2]}", fontsize=18, fontweight="bold")
+        else:
+            label = output.argmax()
+            helper.plot_prediction(axe, output, label)
+    plt.tight_layout()
+
+
+def show_data(trainloader, batch_size, show_size=8, no_cols=4):
+    axes = helper.get_axes(no_cols, show_size, batch_size)
+
+    dataiter = iter(trainloader)
     images, labels = dataiter.next()
-    images = images.view(images.shape[0], -1)
 
-    outputs = model(images)
-    outputs = torch.exp(outputs)
-    outputs = list(outputs.numpy().squeeze())
+    images.resize_(batch_size, 1, IMAGE_SIZE[0] * IMAGE_SIZE[1])
 
-    images.resize_(BATCH_SIZE, 1, 28 * 28)
+    for index, axe in enumerate(axes.ravel()):
+        img = images[index]
+        axe.imshow(img.view(1, IMAGE_SIZE[0], IMAGE_SIZE[1]).numpy().squeeze())
+        axe.set_title(f"Label: {labels[index]}", fontsize=18, fontweight="bold")
 
-    helper.plot_mnist(axes, images, labels, outputs)
+    plt.tight_layout()
 
 
 if __name__ == "__main__":
