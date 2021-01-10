@@ -1,31 +1,25 @@
 # Introduction to PyTorch
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/emlozin/intro_to_pytorch/main)
-
 This repository contains a set of notebooks for beginners in PyTorch.
-
 
 ### Requirements
 
-For specific requirements refer to ``environment.yml`` file. 
+For specific requirements refer to ``requirements.txt`` file. 
 
 ### Installation
-Make sure you have [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) installed.
 
-- Linux or Mac
+#### Binder
+
+You can use Binder. It does not require any installation, just click the button below:
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/emlozin/intro_to_pytorch/main)
+
+#### Conda
+Make sure you have [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) installed.
 
 ```
 conda env create -f environment.yml
 conda activate intro_to_pytorch
-python -m ipykernel install --user --name=intro_to_pytorch
-jupyter notebook
-```
-
-- Windows
-
-```
-conda env create -f environment.yml
-activate intro_to_pytorch
 python -m ipykernel install --user --name=intro_to_pytorch
 jupyter notebook
 ```
