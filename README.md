@@ -17,9 +17,19 @@ You can use Binder. It does not require any installation, just click the button 
 #### Conda
 Make sure you have [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/) installed.
 
+Linux or Mac
 ```
 conda env create -f environment.yml
 conda activate intro_to_pytorch
+python -m ipykernel install --user --name=intro_to_pytorch
+jupyter notebook
+```
+
+Windows
+```
+conda env create -f environment.yml
+conda activate intro_to_pytorch
+conda install pywin32
 python -m ipykernel install --user --name=intro_to_pytorch
 jupyter notebook
 ```
