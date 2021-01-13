@@ -13,11 +13,12 @@ CIFAR10_CLASSES = ('plane', 'car', 'bird', 'cat',
            'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
 
-def show_data(trainloader, batch_size, show_size=10, no_cols=5):
-    axes = helper.get_axes(no_cols, show_size, batch_size)
-
+def show_data(trainloader, show_size=10, no_cols=5):
     dataiter = iter(trainloader)
     images, labels = dataiter.next()
+
+    show_size = helper.validate_show_size(images, show_size)
+    axes = helper.get_axes(no_cols, show_size)
 
     for index, axe in enumerate(axes.ravel()):
         img = images[index]
@@ -29,12 +30,13 @@ def show_data(trainloader, batch_size, show_size=10, no_cols=5):
     plt.tight_layout()
 
 
-def show_classify(testloader, model, batch_size, show_size=18, no_cols=4):
+def show_classify(testloader, model, show_size=18, no_cols=4):
     with torch.no_grad():
-        axes = helper.get_axes(no_cols, show_size, batch_size)
-
         dataiter = iter(testloader)
         images, labels = dataiter.next()
+
+        show_size = helper.validate_show_size(images, show_size)
+        axes = helper.get_axes(no_cols, show_size)
 
         outputs = model.forward(images)
         show_output_cifar(axes, images, labels, outputs)

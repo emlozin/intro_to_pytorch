@@ -5,6 +5,26 @@ import torch
 from torchvision import transforms
 
 
+def linear_model(x, params):
+    return params[0]*x + params[1]
+
+
+def noise(signal):
+    n = torch.zeros(signal.shape)
+    torch.nn.init.normal_(n)
+    return n
+
+
+def mse(p, t):
+    return (p - t).pow(2).mean()
+
+
+def show_fit(x, p, t):
+    fig, ax = plt.subplots(1, figsize=(7, 7))
+    ax.plot(x.numpy(), t.numpy(), marker="o", linewidth=0)
+    ax.plot(x.numpy(), p.numpy())
+
+
 def plot_prediction(axe, output, label, labels=np.arange(10)):
     colors = ['g' if element == max(output) else 'b' for element in output]
     axe.barh(labels, output, color=colors)
@@ -36,10 +56,7 @@ def show_filters(filters=None, image_name='../img/lena.png'):
     plt.tight_layout()
 
 
-def get_axes(no_cols, show_size, batch_size):
-    if show_size > batch_size:
-        print(f"!!Warning!!\nSize greater than batch size, will use {batch_size} instead...")
-        show_size = batch_size
+def get_axes(no_cols, show_size):
     no_cols = no_cols
     no_rows = show_size // no_cols
     fig, axes = plt.subplots(figsize=(no_cols * 3, no_rows * 3), ncols=no_cols, nrows=no_rows)
@@ -63,3 +80,10 @@ def plot_multiple(input_x, plots):
         axes[index].grid(True)
         axes[index].set_title(plot_name, fontweight="bold")
     plt.tight_layout()
+
+
+def validate_show_size(images, show_size):
+    if show_size > len(images):
+        print(f"Maximum number of images is batch size {len(images)}! Will use it instead.")
+        show_size = len(images)
+    return show_size
