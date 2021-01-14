@@ -112,7 +112,7 @@ def show_output_mnist(axes, images, labels, outputs):
             axe.set_title(f"Correct: {labels[index // 2]}", fontsize=18, fontweight="bold")
         else:
             label = output.argmax()
-            helper.plot_prediction(axe, output, label)
+            helper.plot_prediction(axe, output, label, labels[index // 2])
     plt.tight_layout()
 
 

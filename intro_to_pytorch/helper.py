@@ -25,8 +25,8 @@ def show_fit(x, p, t):
     ax.plot(x.numpy(), p.numpy())
 
 
-def plot_prediction(axe, output, label, labels=np.arange(10)):
-    colors = ['g' if element == max(output) else 'b' for element in output]
+def plot_prediction(axe, output, label, correct, labels=np.arange(10)):
+    colors = ['g' if index == correct else 'b' for index, element in enumerate(output)]
     axe.barh(labels, output, color=colors)
     axe.set_aspect(0.1)
     axe.set_yticks(labels)

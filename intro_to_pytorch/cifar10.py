@@ -52,7 +52,7 @@ def show_output_cifar(axes, images, labels, outputs):
             axe.set_title(f"Correct: {CIFAR10_CLASSES[labels[index // 2]]}", fontsize=18, fontweight="bold")
         else:
             label = CIFAR10_CLASSES[output.argmax()]
-            helper.plot_prediction(axe, output, label, labels=CIFAR10_CLASSES)
+            helper.plot_prediction(axe, output, label, labels[index // 2], labels=CIFAR10_CLASSES)
     plt.tight_layout()
 
 
@@ -60,7 +60,7 @@ def accuracy(preds, target):
     return (preds.max(-1)[1] == target).float().mean()
 
 
-def train_nn(model, loss, testloader, trainloader, n_epochs, lr):
+def train_nn(model, loss, optim, trainloader, testloader, n_epochs):
     train_losses = np.array([])
     test_losses = np.array([])
     accuracies = np.array([])
@@ -71,10 +71,8 @@ def train_nn(model, loss, testloader, trainloader, n_epochs, lr):
             train_loss.backward()
             train_losses = np.append(train_losses, train_loss.item())
 
-            with torch.no_grad():
-                for p in model.parameters():
-                    p += - lr * p.grad
-                    p.grad.data.zero_()
+            optim.step()
+            optim.zero_grad()
 
         test_loss, acc = evaluate_nn(model, loss, testloader)
         test_losses = np.append(test_losses, test_loss)
